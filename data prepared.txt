@@ -1,0 +1,16 @@
+Register page
+    -username
+    -email
+    -password
+    -photo 
+    -DOB
+
+Register Submit
+
+Login 
+    -email
+    -password
+
+Login submit
+
+Access Token will not stored in database but refresh token will store in database.
