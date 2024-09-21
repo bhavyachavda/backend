@@ -4,6 +4,7 @@ import { User } from "../models/users.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 // Access Token will not stored in database but refresh token will store in database.
 
@@ -81,7 +82,7 @@ const registerUser = asyncHandler( async (req,res) => {
         coverImage: coverImage?.url || "",
         email,
         password,
-        username: username.toLowerCase()  
+        username: username?.toLowerCase()  
     })
 
     const createdUser = await User.findById(user._id).select(
@@ -153,8 +154,8 @@ const logoutUser = asyncHandler(async (req,res) => {
     await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set: {
-                refreshToken: undefined 
+            $unset: {
+                refreshToken: 1 //this remove the field from document 
             }
         },
         {
@@ -308,7 +309,7 @@ const getUserChannelProfile = asyncHandler(async (req,res) => {
     const channel = await User.aggregate([
         {
             $match : {
-                username: username?.towLowerCase() 
+                username: username?.toLowerCase() 
             }
         },
         {
